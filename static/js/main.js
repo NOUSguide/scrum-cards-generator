@@ -4,24 +4,35 @@ Handlebars.registerHelper('lc', function(text) {
     return text ? text.toLowerCase() : '';
 });
 
-Handlebars.registerHelper("moduloIf", function(index_count,mod, block) {
-
-  if(parseInt(index_count) != 0 &&
-    parseInt(index_count)%(mod)=== 0){
-    return block.fn(this);}
-});
-
 function generateCards() {
     var url      = 'https://redmine.nousguide.com/';
     var ids      = $('#ids').val().split(/\s*,\s*/).filter(function(id) {return id.match(/^\d+$/)});
-    var template = Handlebars.compile( $('#cards-template').html() );
+    var filter   = $('#filter').val().toString().trim();
+    localStorage.redmineURL = url;
 
-    if (!url || !ids.length) {
+    if (!filter && !ids.length) {
         alert('Check fields');
         return;
     }
 
-    localStorage.redmineURL = url;
+    if (filter) {
+      var filterParts = filter.split("/issues");
+      var jsonFilter = filterParts[0] + "/issues.json" + filterParts[1];
+      console.log(jsonFilter);
+      getIssuesByFilter(url, jsonFilter).then(function(issues) {
+          issues.forEach(function(entry) {
+              ids.push(entry.id);
+              console.log(entry.id);
+         });
+         drawCards(url, ids)
+       }).catch(console.error);
+    } else {
+      drawCards(url, ids);
+    }
+}
+
+function drawCards(url, ids) {
+    var template = Handlebars.compile( $('#cards-template').html() );
 
     prepareTemplateData(url, ids).then(function(data) {
         $('#cards').html( template(data) );
@@ -44,7 +55,7 @@ function init() {
             generateCards();
         }
     });
-    setTimeout(function() { $('#ids').focus(); }, 1000);
+    // setTimeout(function() { $('#ids').focus(); }, 1000);
 }
 
 function prepareTemplateData(url, ids) {
@@ -62,6 +73,12 @@ function prepareTemplateData(url, ids) {
     return Promise.all(issuesPromises).then(function(issues) {
         return { issues: splitArray(issues,3) };
     }).catch(console.error);
+}
+
+function getIssuesByFilter(url, filter) {
+    var api = new RedmineAPI({ url: url });
+    var issuesPromises = api.fetchIssues(filter);
+    return issuesPromises;
 }
 
 function splitArray(array, step) {

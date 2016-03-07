@@ -4,7 +4,10 @@
         display: none !important;
     }
 
-    .page-break	{ display: block; page-break-before: always; }
+    .page-break	{
+      page-break-inside:avoid;
+      /*page-break-before: always;*/
+    }
 }
 
 * {
@@ -29,6 +32,7 @@ tr {
     height: 220px;
     font-size: 12px;
     text-align: left;
+    word-wrap: break-word;
 }
 
 .card .title-left {
@@ -38,6 +42,7 @@ tr {
     overflow: hidden;
     padding: 3px;
     border-bottom: 1px solid black;
+    word-wrap: break-word;
 }
 
 .card .title-right {
@@ -49,6 +54,7 @@ tr {
     padding: 3px;
     text-align: center;
     border-bottom: 1px solid black;
+    word-wrap: break-word;
 }
 
 .card .footer {
@@ -119,6 +125,8 @@ tr {
 .card .description {
     text-align: justify;
     padding: 5px;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 
 .card .subtasks {

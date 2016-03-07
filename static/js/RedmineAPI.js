@@ -28,6 +28,18 @@ var RedmineAPI = (function() {
             });
         },
 
+        fetchIssues: function(filter) {
+            var url  = filter;
+            console.log('FETCHING %s', url);
+
+            return Promise.resolve( $.ajax({
+                url: url,
+                jsonp: "callback",
+                dataType: "jsonp"
+            })).then(function(res) {
+                return res.issues;
+            });
+        },
         _fetchIssue: function(id) {
             var url  = this.url + '/issues/' + id + '.json?include=children';
             console.log('FETCHING %s FROM %s', id, url);
@@ -41,6 +53,5 @@ var RedmineAPI = (function() {
             });
         }
     };
-
     return RedmineAPI;
 })();

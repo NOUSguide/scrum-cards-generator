@@ -26,6 +26,9 @@
     <div class="no-print">
         <form onsubmit="return false;">
             <input id='ids' type='text' size="100" placeholder='Enter issues ids' />
+            <br />
+            <input id='filter' type='text' size="100" placeholder='or enter a link to an issues filter' />
+            <br />
             <input id='submit' type='button' value='submit' />
         </form>
     </div>
@@ -40,7 +43,7 @@
                 <tr>
                     {{#each this}}
                     <td>
-                        <div class='card {{#moduloIf @../index 4}} page-break {{/moduloIf}}'>
+                        <div class='card page-break'>
                             <div class='title-left project{{project.id}}alternative'> <b> {{#if id}}#{{id}} {{/if}} </b> <br/> {{#if project.name}} {{project.name}} {{/if}} </div>
                             <div class='title-right project{{project.id}}'> {{#if category.name}} {{category.name}} <br/> {{/if}} {{#if fixed_version.name}} <i>{{fixed_version.name}}</i> {{/if}} </div>
                             <div class='body clear' />
