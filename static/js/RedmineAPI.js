@@ -13,6 +13,12 @@ var RedmineAPI = (function() {
             if (!id) return;
 
             return this._fetchIssue(id).then(function(issue) {
+                if (issue.due_date) {
+                  var d = new Date(issue.due_date);
+                  var month = d.getMonth()+1;
+                  var monthNice = (month < 10 ? "0" : "") + month;
+                  issue.due_date = d.getDate() + "." + monthNice + "." + d.getFullYear();
+                }
                 if (!issue.parent) return issue;
 
                 return self._fetchIssue(issue.parent.id).then(function(parentIssue) {
@@ -38,4 +44,3 @@ var RedmineAPI = (function() {
 
     return RedmineAPI;
 })();
-
