@@ -106,8 +106,14 @@ tr {
 }
 
 .card .subtitle {
+    float: left;
     text-align: center;
     font-weight: bold;
+}
+
+.card .qrcode {
+    float: right;
+    padding: 5px;
 }
 
 .card .description {

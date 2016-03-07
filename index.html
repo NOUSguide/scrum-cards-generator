@@ -10,16 +10,17 @@
     <script type="text/javascript" src='static/js/3d-party/handlebars.js'></script>
     <script type="text/javascript" src='static/js/3d-party/promise-4.0.0.js'></script>
 
+
+    <script type="text/javascript" src='static/js/3d-party/qrcode.js'></script>
+
     <script type="text/javascript" src='static/js/RedmineAPI.js'></script>
     <script type="text/javascript" src='static/js/Model.js'></script>
     <script type="text/javascript" src='static/js/Issue.js'></script>
     <script type="text/javascript" src='static/js/main.js'></script>
 
-
     <script type="text/javascript">
         $(document).ready(init);
     </script>
-
 </head>
 <body>
     <div class="no-print">
@@ -42,11 +43,15 @@
                         <div class='card {{#moduloIf @../index 4}} page-break {{/moduloIf}}'>
                             <div class='title-left project{{project.id}}alternative'> <b> {{#if id}}#{{id}} {{/if}} </b> <br/> {{#if project.name}} {{project.name}} {{/if}} </div>
                             <div class='title-right project{{project.id}}'> {{#if category.name}} {{category.name}} <br/> {{/if}} {{#if fixed_version.name}} <i>{{fixed_version.name}}</i> {{/if}} </div>
-                            <div class='body clear'>
+                            <div class='body clear' />
+                                <span id="qrcode{{#if id}}{{id}}{{/if}}" class="qrcode"> </span>
                                 <div class='description'>
                                     <b> {{tracker.name}} </b> {{#if id}}({{priority.name}}){{/if}}
+
                                     <br /><br />
                                     {{subject}}
+
+
                                 </div>
 
                                 <!-- <br />
@@ -69,7 +74,7 @@
                                     </div>
                                 {{/if}} -->
 
-                            </div>
+
 
                             <div class='footer'>
                                 <div class='start-date'> Board Date </div>
