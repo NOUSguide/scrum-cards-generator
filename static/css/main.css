@@ -119,12 +119,16 @@ tr {
 
 .card .qrcode {
     float: right;
-    padding: 5px;
+    margin-left: 3px;
+}
+
+.card .description-holder {
+    padding: 3px;
 }
 
 .card .description {
+    position:relative;
     text-align: justify;
-    padding: 5px;
     word-wrap: break-word;
     overflow: hidden;
 }

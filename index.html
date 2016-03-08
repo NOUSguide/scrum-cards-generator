@@ -47,15 +47,14 @@
                             <div class='title-left project{{project.id}}alternative'> <b> {{#if id}}#{{id}} {{/if}} </b> <br/> {{#if project.name}} {{project.name}} {{/if}} </div>
                             <div class='title-right project{{project.id}}'> {{#if category.name}} {{category.name}} <br/> {{/if}} {{#if fixed_version.name}} <i>{{fixed_version.name}}</i> {{/if}} </div>
                             <div class='body clear' />
+
+                            <div class='description-holder' >
                                 <span id="qrcode{{#if id}}{{id}}{{/if}}" class="qrcode"> </span>
-                                <div class='description'>
-                                    <b> {{tracker.name}} </b> {{#if id}}({{priority.name}}){{/if}}
-
-                                    <br /><br />
+                                <span class='description'><b>{{tracker.name}}</b> {{#if id}}({{priority.name}}){{/if}}<br />
+                                    <br />
                                     {{subject}}
-
-
-                                </div>
+                                </span>
+                            </div>
 
                                 <!-- <br />
 
