@@ -4,14 +4,51 @@ Handlebars.registerHelper('lc', function(text) {
     return text ? text.toLowerCase() : '';
 });
 
+function init() {
+    $('#loading').hide();
+    $('#url').val( localStorage.redmineURL || '' );
+    $('#submit').click(generateCards);
+    $('#ids').keydown(function (event) {
+        var keypressed = event.keyCode || event.which;
+        if (keypressed == 13) {
+            generateCards();
+        }
+    });
+    $('#filter').keydown(function (event) {
+        var keypressed = event.keyCode || event.which;
+        if (keypressed == 13) {
+            generateCards();
+        }
+    });
+
+    var params = window.location.search.substr(1);
+    if (params != null && params != "") {
+        params = transformToAssocArray(params);
+        console.log(params);
+        console.log('someParam GET value is', params['ids']);
+        if (params['ids']) {
+            $('#ids').val(params['ids']);
+        }
+        if (params['filter']) {
+            $('#filter').val(params['filter']);
+        }
+        if (params['ids'] || params['filter']) {
+            generateCards();
+        }
+    }
+}
+
 function generateCards() {
     var url      = 'https://redmine.nousguide.com/';
     var ids      = $('#ids').val().split(/\s*,\s*/).filter(function(id) {return id.match(/^\d+$/)});
     var filter   = $('#filter').val().toString().trim();
+    $('#submit').hide();
+    $('#loading').show();
     localStorage.redmineURL = url;
 
     if (!filter && !ids.length) {
         alert('Check fields');
+        onDone(false);
         return;
     }
 
@@ -31,6 +68,14 @@ function generateCards() {
     }
 }
 
+function onDone(print) {
+    $('#submit').show();
+    $('#loading').hide();
+    if (print) {
+        window.print();
+    }
+}
+
 function drawCards(url, ids) {
     var template = Handlebars.compile( $('#cards-template').html() );
 
@@ -43,26 +88,15 @@ function drawCards(url, ids) {
                 }
             });
         });
-    });
-}
-
-function init() {
-    $('#url').val( localStorage.redmineURL || '' );
-    $('#submit').click(generateCards);
-    $('#ids').keydown(function (event) {
-        var keypressed = event.keyCode || event.which;
-        if (keypressed == 13) {
-            generateCards();
-        }
-    });
-    // setTimeout(function() { $('#ids').focus(); }, 1000);
+        onDone(true);
+    }).catch(console.error);;
 }
 
 function prepareTemplateData(url, ids) {
     var api = new RedmineAPI({ url: url });
     var issuesPromises = ids.map(function(id) {
         return api.getIssueById(id);
-    } );
+    });
     var cardsCountPerPage = 12;
     if (issuesPromises.length % cardsCountPerPage != 0) {
         var count = (issuesPromises.length % cardsCountPerPage - cardsCountPerPage) * -1;
@@ -107,4 +141,18 @@ function makeCode(id) {
         correctLevel : QRCode.CorrectLevel.H
     });
     qrcode.makeCode(link);
+}
+
+function urldecode(str) {
+    return decodeURIComponent((str+'').replace(/\+/g, '%20'));
+}
+
+function transformToAssocArray( prmstr ) {
+    var params = {};
+    var prmarr = prmstr.split("&");
+    for ( var i = 0; i < prmarr.length; i++) {
+        var tmparr = prmarr[i].split("=");
+        params[tmparr[0]] = urldecode(tmparr[1]);
+    }
+    return params;
 }

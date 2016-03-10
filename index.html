@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Scrum cards</title>
+    <title>Kanban cards</title>
     <link rel="stylesheet" type="text/css" href="static/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="static/css/main.css">
     <link rel="stylesheet" type="text/css" href="static/css/project-ids.css">
@@ -24,12 +24,12 @@
 </head>
 <body>
     <div class="no-print">
-        <form onsubmit="return false;">
+        <form id='form' onsubmit="return false;">
             <input id='ids' type='text' size="100" placeholder='Enter issues ids' />
             <br />
             <input id='filter' type='text' size="100" placeholder='or enter a link to an issues filter' />
             <br />
-            <input id='submit' type='button' value='submit' />
+            <input id='submit' type='button' value='Gernerate Cards' /><img id='loading' src="loading.gif"/>
         </form>
     </div>
 

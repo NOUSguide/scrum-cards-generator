@@ -35,7 +35,13 @@ var RedmineAPI = (function() {
             return Promise.resolve( $.ajax({
                 url: url,
                 jsonp: "callback",
-                dataType: "jsonp"
+                dataType: "jsonp",
+                statusCode: {
+                    404: function() {
+                      alert('Could not find filter ' + filter);
+                      onDone();
+                    }
+                }
             })).then(function(res) {
                 return res.issues;
             });
@@ -47,7 +53,13 @@ var RedmineAPI = (function() {
             return Promise.resolve( $.ajax({
                 url: url,
                 jsonp: "callback",
-                dataType: "jsonp"
+                dataType: "jsonp",
+                statusCode: {
+                    404: function() {
+                      alert('Could not find issue #' + id);
+                      onDone();
+                    }
+                }
             })).then(function(res) {
                 return res.issue;
             });
